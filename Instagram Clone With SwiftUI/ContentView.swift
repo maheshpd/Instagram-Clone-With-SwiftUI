@@ -72,6 +72,7 @@ struct ContentView_Previews: PreviewProvider {
 struct Home: View {
     
     @ObservedObject var observed = observer()
+    @ObservedObject var postsobserver = Postsobserver()
     @State var show = false
     @State var user = ""
     @State var url = ""
@@ -82,15 +83,23 @@ struct Home: View {
             VStack{
                 ScrollView(.horizontal,showsIndicators: false) {
                     HStack {
+                        
                         ForEach(observed.status) { i in
                             StatusCard(imName: i.image, user: i.name, show: self.$show, user1: self.$user, url: self.$url).padding(.leading, 10)
                         }
-                    }
+                    }.animation(.spring())
                 }
                 
-                ForEach(0..<8) {_ in
-                   postCard(user: "", image: "", id: "")
+                                
+                if postsobserver.posts.isEmpty {
+                    Text("No Posts").fontWeight(.heavy)
+                } else {
+                    ForEach(postsobserver.posts) {i in
+                        postCard(user: i.name, image: i.image, id: i.id, likes: i.likes, comments: i.comments)
+                    }
+
                 }
+                
                 
             }
         }.sheet(isPresented: $show) {
@@ -134,13 +143,16 @@ struct postCard: View {
     var user = ""
     var image = ""
     var id = ""
+    var likes = ""
+    var comments = ""
+    
     
     var body: some View {
         VStack(alignment: .leading, content:  {
             HStack {
-                Image("testing").resizable().foregroundColor(Color("darkAndWhite"))
+                AnimatedImage(url: URL(string: image)).resizable().foregroundColor(Color("darkAndWhite"))
                     .frame(width: 30, height: 30).clipShape(Circle())
-                Text("User")
+                Text(user)
                 Spacer()
                 Button(action: {
                     
@@ -150,7 +162,7 @@ struct postCard: View {
                 }.foregroundColor(Color("darkAndWhite"))
             }
             
-            Image("testing").resizable().frame(height: 350).edgesIgnoringSafeArea(.all)
+            AnimatedImage(url: URL(string: image)).resizable().frame(height: 350).edgesIgnoringSafeArea(.all)
             HStack {
                 
                 Button(action: {
@@ -161,7 +173,17 @@ struct postCard: View {
                 }.foregroundColor(Color("darkAndWhite"))
                 
                 Button(action: {
-                    
+                    //Update likes
+                    let like = Int.init(self.likes)!
+                    let db = Firestore.firestore()
+                    db.collection("posts").document(self.id).updateData(["likes":"\(like + 1)"]) { (err) in
+                        
+                        if err != nil {
+                            print((err))
+                            return
+                        }
+                        print("updated....")
+                    }
                 }) {
                     Image("heart").resizable()
                     .frame(width: 26, height: 26)
@@ -178,8 +200,8 @@ struct postCard: View {
                 
             }.padding(.top, 8)
             
-            Text("2 Likes").padding(.top, 8)
-            Text("View all 3 Comments")
+            Text("\(likes) Likes").padding(.top, 8)
+            Text("View all \(comments) Comments")
         }).padding(8)
     }
 }
@@ -221,6 +243,74 @@ class observer: ObservableObject {
         }
     }
 }
+
+class Postsobserver: ObservableObject {
+    @Published var posts = [datatype1]()
+    
+    init() {
+        let db = Firestore.firestore()
+        db.collection("posts").addSnapshotListener { (snap, error) in
+            if error != nil {
+                print((error?.localizedDescription)!)
+                return
+            }
+            
+            for i in snap!.documentChanges{
+                if i.type == .added {
+                    let id = i.document.documentID
+                    let name = i.document.get("name") as! String
+                    
+                    let image = i.document.get("image") as! String
+                    
+                    let comment = i.document.get("comments") as! String
+
+                    let likes = i.document.get("likes") as! String
+                    
+                    self.posts.append(datatype1(id: id, name: name, image: image, comments: comment, likes: likes))
+                }
+                
+                if i.type == .removed {
+                    let id = i.document.documentID
+                    
+                    for j in 0..<self.posts.count {
+                        
+                        if self.posts[j].id == id {
+                            self.posts.remove(at: j)
+                            return
+                        }
+                    }
+                    
+                }
+                
+                if i.type == .modified {
+                    let id = i.document.documentID
+                    let like = i.document.get("likes") as! String
+                    
+                    for j in 0..<self.posts.count {
+                        
+                        if self.posts[j].id == id {
+                            self.posts[j].likes = like
+                            return
+                        }
+                    }
+                    
+                }
+                
+                
+            }
+        }
+    }
+}
+
+struct datatype1: Identifiable {
+    
+    var id: String
+    var name : String
+    var image : String
+    var comments : String
+    var likes : String
+}
+
 
 struct datatype: Identifiable {
     
