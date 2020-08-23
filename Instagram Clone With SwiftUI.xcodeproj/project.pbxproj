@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,6 +14,12 @@
 		B519F11724F2134100ED2E8A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B519F11624F2134100ED2E8A /* Preview Assets.xcassets */; };
 		B519F11A24F2134100ED2E8A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B519F11824F2134100ED2E8A /* LaunchScreen.storyboard */; };
 		B519F12224F2147900ED2E8A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B519F12124F2147900ED2E8A /* GoogleService-Info.plist */; };
+		B519F12524F27B7F00ED2E8A /* statusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B519F12424F27B7F00ED2E8A /* statusView.swift */; };
+		B519F12724F27BF100ED2E8A /* StatusCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B519F12624F27BF100ED2E8A /* StatusCard.swift */; };
+		B519F12924F27C3F00ED2E8A /* PostCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B519F12824F27C3F00ED2E8A /* PostCard.swift */; };
+		B519F12B24F27CF400ED2E8A /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = B519F12A24F27CF400ED2E8A /* Home.swift */; };
+		B519F12E24F27D5800ED2E8A /* Observers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B519F12D24F27D5800ED2E8A /* Observers.swift */; };
+		B519F13024F27DA100ED2E8A /* dataTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B519F12F24F27DA100ED2E8A /* dataTypes.swift */; };
 		FA20475C2D4ECE22365AF67A /* Pods_Instagram_Clone_With_SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F747F7701F9D63358A6B094D /* Pods_Instagram_Clone_With_SwiftUI.framework */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +35,12 @@
 		B519F11924F2134100ED2E8A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B519F11B24F2134100ED2E8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B519F12124F2147900ED2E8A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B519F12424F27B7F00ED2E8A /* statusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = statusView.swift; sourceTree = "<group>"; };
+		B519F12624F27BF100ED2E8A /* StatusCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusCard.swift; sourceTree = "<group>"; };
+		B519F12824F27C3F00ED2E8A /* PostCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCard.swift; sourceTree = "<group>"; };
+		B519F12A24F27CF400ED2E8A /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
+		B519F12D24F27D5800ED2E8A /* Observers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observers.swift; sourceTree = "<group>"; };
+		B519F12F24F27DA100ED2E8A /* dataTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dataTypes.swift; sourceTree = "<group>"; };
 		F747F7701F9D63358A6B094D /* Pods_Instagram_Clone_With_SwiftUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Instagram_Clone_With_SwiftUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -50,7 +62,6 @@
 				651F54D04BB538DE3D7B9E31 /* Pods-Instagram Clone With SwiftUI.debug.xcconfig */,
 				00350B2FB205FB6E02B04713 /* Pods-Instagram Clone With SwiftUI.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -76,6 +87,8 @@
 		B519F10C24F2133E00ED2E8A /* Instagram Clone With SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				B519F12C24F27D3800ED2E8A /* Models */,
+				B519F12324F27B5E00ED2E8A /* swiftUI */,
 				B519F10D24F2133E00ED2E8A /* AppDelegate.swift */,
 				B519F10F24F2133E00ED2E8A /* SceneDelegate.swift */,
 				B519F11124F2133E00ED2E8A /* ContentView.swift */,
@@ -93,6 +106,26 @@
 				B519F11624F2134100ED2E8A /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		B519F12324F27B5E00ED2E8A /* swiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				B519F12424F27B7F00ED2E8A /* statusView.swift */,
+				B519F12624F27BF100ED2E8A /* StatusCard.swift */,
+				B519F12824F27C3F00ED2E8A /* PostCard.swift */,
+				B519F12A24F27CF400ED2E8A /* Home.swift */,
+			);
+			path = swiftUI;
+			sourceTree = "<group>";
+		};
+		B519F12C24F27D3800ED2E8A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B519F12D24F27D5800ED2E8A /* Observers.swift */,
+				B519F12F24F27DA100ED2E8A /* dataTypes.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		F7C74996E1D0B17CF5CF9BBC /* Frameworks */ = {
@@ -219,9 +252,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B519F12724F27BF100ED2E8A /* StatusCard.swift in Sources */,
+				B519F12924F27C3F00ED2E8A /* PostCard.swift in Sources */,
 				B519F10E24F2133E00ED2E8A /* AppDelegate.swift in Sources */,
 				B519F11024F2133E00ED2E8A /* SceneDelegate.swift in Sources */,
+				B519F12524F27B7F00ED2E8A /* statusView.swift in Sources */,
+				B519F12E24F27D5800ED2E8A /* Observers.swift in Sources */,
+				B519F13024F27DA100ED2E8A /* dataTypes.swift in Sources */,
 				B519F11224F2133E00ED2E8A /* ContentView.swift in Sources */,
+				B519F12B24F27CF400ED2E8A /* Home.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
