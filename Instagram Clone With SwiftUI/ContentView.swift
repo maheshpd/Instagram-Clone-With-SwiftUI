@@ -72,6 +72,9 @@ struct ContentView_Previews: PreviewProvider {
 struct Home: View {
     
     @ObservedObject var observed = observer()
+    @State var show = false
+    @State var user = ""
+    @State var url = ""
     
     var body: some View {
         
@@ -80,7 +83,7 @@ struct Home: View {
                 ScrollView(.horizontal,showsIndicators: false) {
                     HStack {
                         ForEach(observed.status) { i in
-                            StatusCard(imName: i.image).padding(.leading, 10)
+                            StatusCard(imName: i.image, user: i.name, show: self.$show, user1: self.$user, url: self.$url).padding(.leading, 10)
                         }
                     }
                 }
@@ -90,7 +93,9 @@ struct Home: View {
                 }
                 
             }
-        }.animation(.spring())
+        }.sheet(isPresented: $show) {
+            statusView(url: self.url, name: self.user)
+        }
         
     }
 }
@@ -98,10 +103,29 @@ struct Home: View {
 struct StatusCard: View {
     
     var imName = ""
+    var user = ""
+    @Binding var show : Bool
+    @Binding var user1 : String
+    @Binding var url : String
+    
+    
     var body: some View {
-        AnimatedImage(url: URL(string: imName)).resizable()
-            .frame(width: 80, height: 80)
-            .clipShape(Circle())
+        
+        VStack{
+            AnimatedImage(url: URL(string: imName)).resizable()
+                .frame(width: 80, height: 80)
+                .clipShape(Circle())
+            
+                .onTapGesture {
+                    self.user1 = self.user
+                    self.url = self.imName
+                    self.show.toggle()
+            }
+
+            Text(user).fontWeight(.light)
+            
+        }
+
     }
 }
 
@@ -179,6 +203,20 @@ class observer: ObservableObject {
                     
                     self.status.append(datatype(id: id, name: name, image: image))
                 }
+                
+                if i.type == .removed {
+                    let id = i.document.documentID
+                    
+                    for j in 0..<self.status.count {
+                        
+                        if self.status[j].id == id {
+                            self.status.remove(at: j)
+                            return
+                        }
+                    }
+                    
+                }
+                
             }
         }
     }
@@ -189,6 +227,29 @@ struct datatype: Identifiable {
     var id: String
     var name : String
     var image : String
+}
+
+struct statusView : View {
+    
+    var url = ""
+    var name = ""
+    var body: some View {
+        
+        
+        ZStack {
+            AnimatedImage(url: URL(string: url)).resizable().edgesIgnoringSafeArea(.all)
+            
+            VStack {
+                HStack {
+                    Text(name).font(.headline).fontWeight(.heavy).padding()
+                    Spacer()
+                }
+                
+                Spacer()
+            }
+        }
+    }
+    
 }
 
 //oops i forget
