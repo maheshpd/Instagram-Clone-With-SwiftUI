@@ -70,7 +70,87 @@ struct ContentView_Previews: PreviewProvider {
 struct Home: View {
     var body: some View {
         
-         Text("Home")
+        ScrollView(.vertical, showsIndicators: false){
+            VStack{
+                ScrollView(.horizontal,showsIndicators: false) {
+                    HStack {
+                        ForEach(0..<5) { _ in
+                            StatusCard(imName: "testing").padding(.leading, 10)
+                        }
+                    }
+                }
+                
+                ForEach(0..<8) {_ in
+                   postCard(user: "", image: "", id: "")
+                }
+                
+            }
+        }
         
+    }
+}
+
+struct StatusCard: View {
+    
+    var imName = ""
+    var body: some View {
+        Image(imName).resizable()
+            .frame(width: 60, height: 60)
+            .clipShape(Circle())
+    }
+}
+
+struct postCard: View {
+    
+    var user = ""
+    var image = ""
+    var id = ""
+    
+    var body: some View {
+        VStack(alignment: .leading, content:  {
+            HStack {
+                Image("testing").resizable().foregroundColor(Color("darkAndWhite"))
+                    .frame(width: 30, height: 30).clipShape(Circle())
+                Text("User")
+                Spacer()
+                Button(action: {
+                    
+                }) {
+                    Image("menu").resizable()
+                    .frame(width: 15, height: 15)
+                }.foregroundColor(Color("darkAndWhite"))
+            }
+            
+            Image("testing").resizable().frame(height: 350).edgesIgnoringSafeArea(.all)
+            HStack {
+                
+                Button(action: {
+                    
+                }) {
+                    Image("comment").resizable()
+                    .frame(width: 26, height: 26)
+                }.foregroundColor(Color("darkAndWhite"))
+                
+                Button(action: {
+                    
+                }) {
+                    Image("heart").resizable()
+                    .frame(width: 26, height: 26)
+                }.foregroundColor(Color("darkAndWhite"))
+                
+                Spacer()
+                
+                Button(action: {
+                    
+                }) {
+                    Image("saved").resizable()
+                    .frame(width: 26, height: 26)
+                }.foregroundColor(Color("darkAndWhite"))
+                
+            }.padding(.top, 8)
+            
+            Text("2 Likes").padding(.top, 8)
+            Text("View all 3 Comments")
+        }).padding(8)
     }
 }
