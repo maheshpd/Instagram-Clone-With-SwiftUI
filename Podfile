@@ -6,6 +6,7 @@ target 'Instagram Clone With SwiftUI' do
   use_frameworks!
 
   pod 'Firebase/Firestore'
+   pod 'SDWebImageSwiftUI'
 
   # Pods for Instagram Clone With SwiftUI
 

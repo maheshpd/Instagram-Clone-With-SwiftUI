@@ -8,6 +8,8 @@
 
 import SwiftUI
 import Firebase
+import FirebaseFirestore
+import SDWebImageSwiftUI
 
 
 struct ContentView: View {
@@ -68,14 +70,17 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 struct Home: View {
+    
+    @ObservedObject var observed = observer()
+    
     var body: some View {
         
         ScrollView(.vertical, showsIndicators: false){
             VStack{
                 ScrollView(.horizontal,showsIndicators: false) {
                     HStack {
-                        ForEach(0..<5) { _ in
-                            StatusCard(imName: "testing").padding(.leading, 10)
+                        ForEach(observed.status) { i in
+                            StatusCard(imName: i.image).padding(.leading, 10)
                         }
                     }
                 }
@@ -85,7 +90,7 @@ struct Home: View {
                 }
                 
             }
-        }
+        }.animation(.spring())
         
     }
 }
@@ -94,8 +99,8 @@ struct StatusCard: View {
     
     var imName = ""
     var body: some View {
-        Image(imName).resizable()
-            .frame(width: 60, height: 60)
+        AnimatedImage(url: URL(string: imName)).resizable()
+            .frame(width: 80, height: 80)
             .clipShape(Circle())
     }
 }
@@ -154,3 +159,36 @@ struct postCard: View {
         }).padding(8)
     }
 }
+
+class observer: ObservableObject {
+    @Published var status = [datatype]()
+    
+    init() {
+        let db = Firestore.firestore()
+        db.collection("status").addSnapshotListener { (snap, error) in
+            if error != nil {
+                print((error?.localizedDescription)!)
+                return
+            }
+            
+            for i in snap!.documentChanges{
+                if i.type == .added {
+                    let id = i.document.documentID
+                    let name = i.document.get("name") as! String
+                    let image = i.document.get("image") as! String
+                    
+                    self.status.append(datatype(id: id, name: name, image: image))
+                }
+            }
+        }
+    }
+}
+
+struct datatype: Identifiable {
+    
+    var id: String
+    var name : String
+    var image : String
+}
+
+//oops i forget
